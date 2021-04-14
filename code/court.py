@@ -147,6 +147,9 @@ class Court:
                     file.write(f'{self.file_name}_list error: {key}')
 
     def archive(self):
+        """
+        Call command to archive the urls as .html files.
+        """
         self.__load_csv()
         self.__set_file_name()
         self.__save_html()
