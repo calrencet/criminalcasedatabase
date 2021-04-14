@@ -106,7 +106,7 @@ class Court:
         self.__only_crim()
         self.__compare_csv()
         self.__export_csv()
-        self.file = open('../pull_log.txt', 'a', encoding='utf_8')
+        self.file = open('../logs/pull_log.txt', 'a', encoding='utf_8')
         self.file.write(f'list last updated on: {datetime.today()}')
 
     def __load_csv(self):
@@ -143,14 +143,14 @@ class Court:
                     sleep(randint(1,4))
                 except:
                     # Skip if error, print an error log with index
-                    file = open('../error_log.txt', 'a', encoding='utf_8')
+                    file = open('../logs/error_log.txt', 'a', encoding='utf_8')
                     file.write(f'{self.file_name}_list error: {key}')
 
     def archive(self):
         self.__load_csv()
         self.__set_file_name()
         self.__save_html()
-        self.file = open('../archival_log.txt', 'a', encoding='utf_8')
+        self.file = open('../logs/archival_log.txt', 'a', encoding='utf_8')
         self.file.write(f'last archived on: {datetime.today()}')
 
 class CourtNameError(Exception):
