@@ -4,6 +4,7 @@ import pandas as pd
 from time import sleep
 from random import randint
 from datetime import datetime
+from IPython.display import clear_output
 
 class Court:
 
@@ -69,16 +70,27 @@ class Court:
                     # only store "full" rows of data
                         if len(result) == 3:
                             self.results_list.append(result)
+                    # Clear cell output
+                    clear_output(wait=True)
+
+                    # Print current progress
+                    print(f'Current progress: page {self.current_page}/{self.last_page}.')
+                    
             # Raise page counter
             self.current_page += 1
         self.court_df = pd.DataFrame(self.results_list)
         self.court_df = self.court_df.sort_values(by='date')
+        # Print current progress
+        print(f'Current progress: DataFrame created.')
 
     def __only_crim(self):
         """
         Narrows results to only Criminal cases
         """
         self.court_df = self.court_df[self.court_df['title'].str.contains("Public Prosecutor")]
+
+        # Print current progress
+        print(f'Current progress: Narrowed to only Criminal cases.')
 
     def __compare_csv(self):
         """
@@ -88,6 +100,9 @@ class Court:
         self.court_full = pd.read_csv(f'../data/{self.name}court_compiled.csv')
         self.court_df = self.court_df[~self.court_df['link'].isin(self.court_full['link'])]
         self.court_full = self.court_full.merge(self.court_df, how='outer')
+        
+        # Print current progress
+        print(f'Current progress: New entries identified and saved.')
 
     def __export_csv(self):
         """
@@ -108,6 +123,8 @@ class Court:
         self.__export_csv()
         self.file = open('../logs/pull_log.txt', 'a', encoding='utf_8')
         self.file.write(f'list last updated on: {datetime.today()}')
+        # Print current progress
+        print(f'Current progress: Completed url pull and export.')        
 
     def __load_csv(self):
         """
@@ -126,6 +143,7 @@ class Court:
         """
         Iterates through the lists of dictionaries to save judgments from Lawnet as a .html file.
         """
+        self.count = 1
         for item in self.court_link_list:
             for key, value in item.items():
                 url = value
@@ -141,6 +159,14 @@ class Court:
                     file.write(str(soup))
                     file.close
                     sleep(randint(1,4))
+                    
+                    # Clear cell output
+                    clear_output(wait=True)
+
+                    # Print current progress
+                    print(f'Current progress: {self.count}/{len(self.court_link_list)}.')
+                    self.count += 1
+                    
                 except:
                     # Skip if error, print an error log with index
                     file = open('../logs/error_log.txt', 'a', encoding='utf_8')
@@ -155,6 +181,8 @@ class Court:
         self.__save_html()
         self.file = open('../logs/archival_log.txt', 'a', encoding='utf_8')
         self.file.write(f'last archived on: {datetime.today()}')
+        # Print current progress
+        print(f'Current progress: HTMLs archived.')        
 
 class CourtNameError(Exception):
     pass
