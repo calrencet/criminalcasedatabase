@@ -100,16 +100,18 @@ class Court:
         self.court_full = pd.read_csv(f'../data/{self.name}court_compiled.csv')
         self.court_df = self.court_df[~self.court_df['link'].isin(self.court_full['link'])]
         self.court_full = self.court_full.merge(self.court_df, how='outer')
+        self.court_full.date = pd.to_datetime(self.court_full.date)
+        self.court_full = self.court_full.sort_values(by='date')
         
         # Print current progress
-        print(f'Current progress: New entries identified and saved.')
+        print(f'Current progress: {len(self.court_df.date)} New entries identified and saved.')
 
     def __export_csv(self):
         """
         Exports dataframes to the respective .csv files
         """
-        self.court_df.to_csv(path_or_buf=f'../data/{self.name}court.csv', index=False,date_format='%dd%Mmm%yy')
-        self.court_full.to_csv(path_or_buf=f'../data/{self.name}court_compiled.csv', index=False,date_format='%dd%Mmm%yy')
+        self.court_df.to_csv(path_or_buf=f'../data/{self.name}court.csv', index=False)
+        self.court_full.to_csv(path_or_buf=f'../data/{self.name}court_compiled.csv', index=False)
 
     def pull_urls(self):
         """
@@ -126,12 +128,13 @@ class Court:
         # Print current progress
         print(f'Current progress: Completed url pull and export.')        
 
-    def __load_csv(self):
+    def load_csv(self):
         """
         Loads .csvs using `name` as lists of dictionaries.
         """
         self.court_link_list = [pd.read_csv(f'../data/{self.name}court.csv').link.to_dict()]
         self.court_link_dict = pd.read_csv(f'../data/{self.name}court_compiled.csv').link.to_dict()
+        self.court_full = pd.read_csv(f'../data/{self.name}court_compiled.csv')
 
     def __set_file_name(self):
         """
@@ -164,7 +167,7 @@ class Court:
                     clear_output(wait=True)
 
                     # Print current progress
-                    print(f'Current progress: {self.count}/{len(self.court_link_list)}.')
+                    print(f'Current progress: {self.count}/{len(self.court_link_list[0])}.')
                     self.count += 1
                     
                 except:
@@ -176,13 +179,13 @@ class Court:
         """
         Call command to archive the urls as .html files.
         """
-        self.__load_csv()
+        self.load_csv()
         self.__set_file_name()
         self.__save_html()
         self.file = open('../logs/archival_log.txt', 'a', encoding='utf_8')
         self.file.write(f'last archived on: {datetime.today()}')
         # Print current progress
-        print(f'Current progress: HTMLs archived.')        
+        print(f'Current progress: {len(self.court_link_list[0])} HTMLs archived.')        
 
 class CourtNameError(Exception):
     pass
