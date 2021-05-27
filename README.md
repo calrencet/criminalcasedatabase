@@ -23,7 +23,7 @@ In the current state of the industry, this starting point can take a long time a
 ---
 ### Data Dictionary
 
-The dataset contains the weather, location, testing and spraying in the City of Chicago.The data source below are obtained from [kaggle](https://www.kaggle.com/c/predict-west-nile-virus/data).
+The dataset contains ___).
 
 The datasets obtained are as followed:-
 
