@@ -77,7 +77,7 @@ We have performed feature engineering as listed below:-
 ---
 ### References
 
-[1] "A Study of Attorneys' Legal Research Practices and Opinions of New Associates' Research Skills," *ALL-SIS Task Force on Identifying Skills and Knowledge for Legal Practice*, June 2013. [Online]. Available: [https://www.aallnet.org/allsis/wp-content/uploads/sites/4/2018/01/final_report_07102013.pdf](https://www.aallnet.org/allsis/wp-content/uploads/sites/4/2018/01/final_report_07102013.pdf) [Accessed: May. 6, 2021].
+[1] ALL-SIS Task Force on Identifying Skills and Knowledge for Legal Practice, *'A Study of Attorneys' Legal Research Practices and Opinions of New Associates' Research Skills,'*, June 2013. [Online]. Available: [https://www.aallnet.org/allsis/wp-content/uploads/sites/4/2018/01/final_report_07102013.pdf](https://www.aallnet.org/allsis/wp-content/uploads/sites/4/2018/01/final_report_07102013.pdf) [Accessed: May. 6, 2021].
 
 
 ---

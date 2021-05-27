@@ -75,7 +75,7 @@ class Court:
 
                     # Print current progress
                     print(f'Current progress: page {self.current_page}/{self.last_page}.')
-                    
+
             # Raise page counter
             self.current_page += 1
         self.court_df = pd.DataFrame(self.results_list)
@@ -102,7 +102,7 @@ class Court:
         self.court_full = self.court_full.merge(self.court_df, how='outer')
         self.court_full.date = pd.to_datetime(self.court_full.date)
         self.court_full = self.court_full.sort_values(by='date')
-        
+
         # Print current progress
         print(f'Current progress: {len(self.court_df.date)} New entries identified and saved.')
 
@@ -124,9 +124,9 @@ class Court:
         self.__compare_csv()
         self.__export_csv()
         self.file = open('../logs/pull_log.txt', 'a', encoding='utf_8')
-        self.file.write(f'list last updated on: {datetime.today()}')
+        self.file.write(f'list last updated on: {datetime.today()}; \n')
         # Print current progress
-        print(f'Current progress: Completed url pull and export.')        
+        print(f'Current progress: Completed url pull and export.')
 
     def load_csv(self):
         """
@@ -162,18 +162,18 @@ class Court:
                     file.write(str(soup))
                     file.close
                     sleep(randint(1,4))
-                    
+
                     # Clear cell output
                     clear_output(wait=True)
 
                     # Print current progress
                     print(f'Current progress: {self.count}/{len(self.court_link_list[0])}.')
                     self.count += 1
-                    
+
                 except:
                     # Skip if error, print an error log with index
                     file = open('../logs/error_log.txt', 'a', encoding='utf_8')
-                    file.write(f'{self.file_name}_list error: {key}')
+                    file.write(f'{self.file_name}_list error: {key} : {datetime.today()}; \n')
 
     def archive(self):
         """
@@ -183,9 +183,9 @@ class Court:
         self.__set_file_name()
         self.__save_html()
         self.file = open('../logs/archival_log.txt', 'a', encoding='utf_8')
-        self.file.write(f'last archived on: {datetime.today()}')
+        self.file.write(f'last archived on: {datetime.today()}; \n')
         # Print current progress
-        print(f'Current progress: {len(self.court_link_list[0])} HTMLs archived.')        
+        print(f'Current progress: {len(self.court_link_list[0])} HTMLs archived.')
 
 class CourtNameError(Exception):
     pass
