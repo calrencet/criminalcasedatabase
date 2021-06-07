@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Criminal Case Database</title>
+</head>
+<body>
+  <h1>Criminal Case Database alpha test</h1>
+  <p>This is a proof of concept for my GA DSI21 capstone project. </p>
+  <p>This search box should help to provide some summary statistics for recent judgments in the Singapore Courts!</p>
+  <p>Try an example search from the following (case-insensitive):</p>
+  <li> Section 33 Criminal Procedure Code</li>
+  <li> Misuse of Drugs Act</li>
+  <li> forgery </li>
+  <li> Tang Keng Lai v Public Prosecutor </li>
+
+	<form action="/submit">
+		<p>
+			<label for="input_string">Case Name / Offence / Statute</label><br>
+			<input type="text" name="input_string">
+		</p>
+		<p><button type="submit">Search</button></p>
+	</form>
+  <p> *Note that not all searches may yield results as the database is still small. </p>
+  <p> Further, the search format should match the examples above.</p>
+</body>
+</html>

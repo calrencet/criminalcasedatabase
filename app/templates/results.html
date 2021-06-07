@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+h1 {
+  font-size: 40px;
+  text-align: centre
+}
+
+h2 {
+  font-size: 20px
+}
+
+p {
+  font-size: 15px
+}
+
+</style>
+</head>
+
+<body>
+  <h1>Criminal Case Database alpha test</h1>
+  <p1>This is a proof of concept for my GA DSI21 capstone project. </p1>
+
+  <h2> Summary Statistics </h2>
+  <p> {{mitigating}} </p>
+  <p> {{aggravating}} </p>
+  <h2>{{ plot_name }}</h2>
+
+  <img src={{url}} alt="Top Citations for the search" height="600" width="800">
+
+  <h2> Search results </h2>
+  <p> *Please note that not all Lawnet links will work as free resources are only available for 3 months. </p>
+  <p> *Possible offences and possible statutes were extracted and permutated from the judgment text. </p>
+  <table>
+      <tr>
+          {% for col in column_names %}
+          <th>{{col}}</th>
+          {% endfor %}
+      </tr>
+      {% for row in row_data %}
+      <tr>
+          {% for col, row_ in zip(column_names, row) %}
+          {% if col == link_column %}
+          <td>
+              <a href={{ row_ }}><button>Link to Lawnet</button></a>
+          </td>
+          {% else %}
+          <td>{{row_}}</td>
+          {% endif %}
+          {% endfor %}
+      </tr>
+      {% endfor %}
+
+  </table>
+</body>
+</html>

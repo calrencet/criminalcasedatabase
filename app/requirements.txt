@@ -1,0 +1,10 @@
+Flask==1.1.2
+beautifulsoup4
+lxml
+matplotlib
+pandas
+requests
+numpy
+google-cloud-storage
+gcsfs
+requests
