@@ -17,3 +17,4 @@ supremecourt_list error: 44.html : 2021-06-07 16:27:51.002227;
 subordinatecourt_list error: 79.html : 2021-06-07 16:29:58.898972; 
 subordinatecourt_list error: 78.html : 2021-06-07 16:29:59.165588; 
 subordinatecourt_list error: 80.html : 2021-06-07 16:29:59.411631; 
+supremecourt_list error: 45.html : 2021-06-08 14:49:24.082956; 

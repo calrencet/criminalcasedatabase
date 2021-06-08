@@ -114,6 +114,8 @@ It took me roughly 6 hours over 3 days to manually filter the sections which con
 
 Worthy of a project itself, it would be interesting to explore the use of NLP to identify sections prescribing criminal offences and sections containing their corresponding punishments from the various statutes in order to create a comprehensive database of criminal offences in the statutes of Singapore.
 
+The webscraping portion of the code has achieved a 100% pulling and archival rate, as no judgments were missed out.
+
 ---
 
 ### Natural Language Processing
@@ -141,13 +143,13 @@ Once again, I created a custom class `Database` which has methods for the follow
 
 Overall, the RBIE system that I created ran well without an errors. It was able to extract information for most judgments accurately, except for a few missing values in the columns `citations`, `possible_offences`, and `possible_statutes`.  
 
-For the missing citations, I manually checked the judgments, and found that only the case name was mentioned in those judgments, with no other case citations found within.  
+However, I checked the judgments with missing `citations` and `possible_statutes`, and found that only the case name was mentioned in those judgments, with no other case citations or statutes found within, hence this is not an issue with the NLP. 
 
-Further, there are many instances where the `possible_offences` are `Unsure`. This is because my database of `statutes_crimes` is very limited and should be expanded as an improvement to the project.
+I manually did a random sample of judgments and found that the accuracy rate for information extraction is close to 100%, although the permutations method causes a lot of non-existent statutes to be listed as `possible_statutes`. This is acceptable as it is more important to reduce type II errors (false negatives) where statutes wich are present are missed out.
 
-This however, still suggests that the use of RBIE is not perfect, and leads to instances where the details are not extracted from the judgments.  
+There are many instances where the `possible_offences` are `Not in database`. This is likely because the NLP uses permutations for statutes which are sometimes found separately from the section number, and the database of `statutes_crimes` is very limited and should be expanded as an improvement to the project.
 
-Without any `citations`, `possible_offences`, or `possible_statutes`, not much inference can be made from those rows. However, I am not dropping these columns as they can still be found via their name.
+This however, still suggests that the use of RBIE is not perfect, using a brute-force method that causes some wrong data to be captured.   
 
 ---
 
@@ -181,7 +183,7 @@ Sample `form.html` page
 ![results.html](./images/results.png)  
 Sample `results.html`  
 
-This was overall a fun and learning experience for me, with valuable skills learnt in app deployment for python code.
+This was overall a learning experience, with valuable skills learnt in app deployment for python code.
 
 ---
 
@@ -190,7 +192,7 @@ This was overall a fun and learning experience for me, with valuable skills lear
 
 The webscraping and archival functions worked well, and achieved a 100% collection and archival rate, with no judgments missed. Further, the using a Rule-Based Information Extraction method, the Natural Language Processing of the judgments was quite successful as most of the data which I set out to collect was collected without any issues.  
 
-However, there were a few missing values for `citations` as there were no other citations in the judgments as well as the `statutes` and `offences` (less than 10%).  
+However, there were a few missing values for `citations`, `statutes`, and `offences` as they were not actually in the judgments as well.  
 
 The search function also worked well and returned the expected search results for the searches I tested.  
 
@@ -212,6 +214,8 @@ This can prove to be a very useful feature for legal research, as cases which ar
 ### Future Improvement
 
 Although the NLP worked well, it is not perfect as it uses a Rule-Based Information Extraction method. The html structure may change, and the code is not transferrable to other legal judgment sources and databases. It can definitely be improved through the use of training a Named Entity Recognition Model with Machine Learning which can identify the different categories of Named Entities within the judgment.
+
+The use of a permutation method also caused extra information which was not actually found in the judgments to be captured for `possible_statutes` and `possible_titles`. It would be worthwhile to explore how NER might help to solve this issue.
 
 The database of statutes and offences can also be expanded to feature more sections and statutes. Further, it would also be worth exploring the use of NLP to create a comprehensive database of the various sections of each statute as this can be relevant to legal research.
 

@@ -146,7 +146,7 @@ class Court:
         
         # Load the full dataset .csv and convert dates to datetime
         self.court_full = pd.read_csv(f'../data/{self.name}court_compiled.csv')
-        self.court_full['date'] = pd.to_datetime(self.court_full['date'], format='%d/%m/%Y')
+        self.court_full['date'] = pd.to_datetime(self.court_full['date'], format='%Y-%m-%d')
         
         # Filter to entries which are not in the full dataset
         self.court_df = self.court_df[~self.court_df['link'].isin(self.court_full['link'])]
@@ -362,7 +362,7 @@ class Database:
                     section_num = re.sub('([Ss](ection|)(s|) )', "", section)
                     
                     # Pick out patterns which end in Act or Code as these refer to statutes
-                    statute = re.search(r'((([A-Z][a-z]*)|(of| )*)*(Act|Code))', result.text.replace('\xa0',' ')).group(0).strip()
+                    statute = re.search(r'((([A-Z][a-z]*)|(Corruption, Drug Trafficking and Other Serious Crimes \(Confiscation of Benefits\)|and|of| )){2,}(Act|Code))', result.text.replace('\xa0',' ')).group(0).strip()
                     
                     # Combine section numbers and statute
                     section_statute = section_num + " " + statute
@@ -375,7 +375,8 @@ class Database:
                         
                     # If not found within the database of statutes, adds the section number and statute but list offences as "unsure"
                     else:
-                        self.__offences.append(['Unsure', section_statute])
+                        self.__offences.append(['Not in database', section_statute])
+                        
                 except:
                     pass
         except:
@@ -391,57 +392,65 @@ class Database:
             statutes_found = []
             
             # Search for all the document text
-            self.__search_results2 = self.document.find_all('p', {'class': 'Judg-1'})
+            self.__search_results2 = self.__search_results.text.replace("\xa0"," ")
             
-            # Iterates through the document text to identify the offences
-            for item in self.__search_results2:
-                # Instantiate empty lists
-                section_list = []
-                statute_list = []
-                try:
-                    # Try to find the sections as above
-                    sections = re.findall('( [Ss](ection|)(s|) \d+)', item.text.replace('\xa0',' '))
-                    
-                    # If sections is not empty:
-                    if sections != []:
-                        # Iterate through the sections and adds their digits to the section list
-                        for s in sections:
-                            section_list.append(re.findall(r'\d+',s[0]))
-                            
-                            # Add the sections found to the list
-                            for ss in section_list:
-                                sections_found.append(ss[0])
-                                
-                    # Try to find the statutes as above
-                    statutes = re.findall(r'((([A-Z][a-z]*)|(of| )*)*(Act|Code))', item.text.replace('\xa0',' '))
-                    
-                    # If statutes is not empty:
-                    if statutes != []:
-                        # Iterate through the statutes and adds their name to the statute list
-                        for s in statutes:
-                            statute_list.append(s[0].strip())
-                            
-                            # Add the statutes found to the list
-                            for ss in list(statute_list):
-                                statutes_found.append(ss)
-                except:
-                    pass
+            # Instantiate empty lists
+            section_list = []
+            statute_list = []
             try:
-                # Converts the sections and statutes found to sets to remove duplicates
-                sections = set(sections_found)
-                statutes = set(statutes_found)
+                # Try to find the sections as above
+                sections = re.findall('( [Ss](ection|)(s|) \d+)', self.__search_results2)
+
+                # If sections is not empty:
+                if sections != []:
+                    # Iterate through the sections and adds their digits to the section list
+                    for s in sections:
+                        section_list.append(re.findall(r'\d+',s[0]))
+
+                        # Add the sections found to the list
+                        for ss in section_list:
+                            sections_found.append(ss[0])
+
+                # Try to find the statutes as above
+                statutes = re.findall(r'((([A-Z][a-z]*)|(Corruption, Drug Trafficking and Other Serious Crimes \(Confiscation of Benefits\)|and|of| )){2,}(Act|Code))', self.__search_results2)
+
+                # If statutes is not empty:
+                if statutes != []:
+                    # Iterate through the statutes and adds their name to the statute list
+                    for s in statutes:
+                        statute_list.append(s[0].strip())
+
+                        # Add the statutes found to the list
+                        for ss in list(statute_list):
+                            statutes_found.append(ss)
+            except:
+                pass
+            
+            if statutes_found != []:
+                # Convert the sections and statutes found to sets to remove duplicates
+                sections2 = set(sections_found)
+                statutes2 = set(statutes_found)
                 
-                # Permutates through the sections and statutes to find all possible combinations of the two
-                combinations = list(itertools.product(list(sections),list(statutes)))
+                # Permutate through the sections and statutes to find all possible combinations of the two
+                combinations = list(itertools.product(list(sections2),list(statutes2)))
+                
+                # Check if combinations is blank
+                if combinations == []:
+                    combinations = list(statutes_found)
                 
                 # Instantiate list of possible offences
                 possible_offences = []
                 
-                # Adds each possible offence from the permutations to the list of possible offences
-                for offence in combinations:
-                    possible_offences.append(' '.join(offence))
+                # Check if combinations has only 1 entry and sets possible_offences as combinations
+                if type(combinations[0]) == str:
+                    possible_offences = combinations
+                
+                else:
+                    # Add each possible offence from the permutations to the list of possible offences
+                    for offence in combinations:
+                        possible_offences.append(' '.join(offence))
                     
-                # Checks the database of statutes I created to find a possible offence if it exists within and adds it to the list of offences for this judgment
+                # Check the database of statutes I created to find a possible offence if it exists within and adds it to the list of offences for this judgment
                 for value in possible_offences:
                     if value in self.statutes_df['section_statute'].values:
                         index = self.statutes_df[self.statutes_df['section_statute'] == value].index
@@ -451,10 +460,8 @@ class Database:
                         
                     # If not found within the database of statutes, adds the section number and statute but list offences as "unsure"
                     else:
-                        offence_b.append(['Unsure', value])
+                        offence_b.append(['Not in database', value])
                         [self.__offences.append(x) for x in offence_b if x not in self.__offences];
-            except:
-                pass
             
         # Instantiate empty lists and dictionaries
         self.__title = []
@@ -472,8 +479,8 @@ class Database:
         self.__temp_title = set(self.__temp_title)
         
         # Adds each temp_title to title
-        for title in self.__temp_title:
-            self.__title.append(str(title))
+        for titles in self.__temp_title:
+            self.__title.append(str(titles))
             
         # Joins all the titles in title list as a full string
         self.__title = ",".join(self.__title)
@@ -482,7 +489,7 @@ class Database:
         self.__statute = ",".join(self.__statute)
         
         # Returns title and statute as a dictionary
-        self.__title_statute = {'possible_offences': self.__title, 'possible_statutes': self.__statute}
+        self.__title_statute = {'possible_titles': self.__title, 'possible_statutes': self.__statute}
         return self.__title_statute
      
     def __get_citations(self):
