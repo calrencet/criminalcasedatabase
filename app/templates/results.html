@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="author" content="colorlib.com">
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+  <link href="css/main.css" rel="stylesheet" />
+  <title>Criminal Case Database</title>
 <style>
 
 table {
@@ -19,56 +26,47 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 
-h1 {
-  font-size: 40px;
-  text-align: centre
-}
-
-h2 {
-  font-size: 20px
-}
-
-p {
-  font-size: 15px
-}
-
 </style>
 </head>
 
 <body>
-  <h1>Criminal Case Database alpha test</h1>
-  <p1>This is a proof of concept for my GA DSI21 capstone project. </p1>
+  <div class="s131">
+    <form>
+      <h1>Criminal Case Database alpha test</h1>
+      <p1 class="info">This is a proof of concept for my GA DSI21 capstone project. </p1>
 
-  <h2> Summary Statistics </h2>
-  <p> {{mitigating}} </p>
-  <p> {{aggravating}} </p>
-  <h2>{{ plot_name }}</h2>
+      <h2 class="info"> Summary Statistics </h2>
+      <p class="info"> {{mitigating}} </p>
+      <p class="info"> {{aggravating}} </p>
+      <h2 class="info">{{ plot_name }}</h2>
 
-  <img src={{url}} alt="Top Citations for the search" height="600" width="800">
+      <img src={{url}} alt="Top Citations for the search" height="600" width="800">
 
-  <h2> Search results </h2>
-  <p> *Please note that not all Lawnet links will work as free resources are only available for 3 months. </p>
-  <p> *Possible offences and possible statutes were extracted and permutated from the judgment text. </p>
-  <table>
-      <tr>
-          {% for col in column_names %}
-          <th>{{col}}</th>
+      <h2 class="info"> Search results </h2>
+      <p class="info"> *Please note that not all Lawnet links may work as free resources are only available for 3 months unless you have a subsription. </p>
+      <p class="info"> *Possible offences and possible statutes were extracted and permutated from the judgment text. </p>
+      <table>
+          <tr>
+              {% for col in column_names %}
+              <th>{{col}}</th>
+              {% endfor %}
+          </tr>
+          {% for row in row_data %}
+          <tr>
+              {% for col, row_ in zip(column_names, row) %}
+              {% if col == link_column %}
+              <td>
+                  <a href={{ row_ }}><button>Link to Lawnet</button></a>
+              </td>
+              {% else %}
+              <td>{{row_}}</td>
+              {% endif %}
+              {% endfor %}
+          </tr>
           {% endfor %}
-      </tr>
-      {% for row in row_data %}
-      <tr>
-          {% for col, row_ in zip(column_names, row) %}
-          {% if col == link_column %}
-          <td>
-              <a href={{ row_ }}><button>Link to Lawnet</button></a>
-          </td>
-          {% else %}
-          <td>{{row_}}</td>
-          {% endif %}
-          {% endfor %}
-      </tr>
-      {% endfor %}
 
-  </table>
+        </table>
+      </form>
+    </div>
 </body>
 </html>

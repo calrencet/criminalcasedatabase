@@ -24,7 +24,7 @@ app = Flask(__name__)
 
 # Define home function
 def index():
-        return render_template('form.html')
+        return render_template('index.html')
 
 def classify_search(input_string):
     if re.search('[Aa]ct|[Cc]ode', input_string):
@@ -37,7 +37,7 @@ def classify_search(input_string):
         section_statute = section_num + " " + str.lower(statute)
         return section_statute
     elif re.search(' [Vv] ', input_string):
-        temp_case_name = re.search('((([A-Za-z]*)|(d\/o|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Za-z]*)|(d\/o|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', input_string.lower()).group(0).strip()
+        temp_case_name = re.search('((([A-Za-z]*)|(a\/l|a\/p|d\/o|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Za-z]*)|(a\/l|a\/p|d\/o|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', input_string.lower()).group(0).strip()
         case_name = str.lower(temp_case_name)
         return case_name
     else:
@@ -50,19 +50,19 @@ def search_search(input_string):
         temp = database.copy().dropna()
         temp1 = temp['possible_statutes'].apply(lambda x: x.lower())
         result = database.loc[list(temp[temp1.str.contains(search_string)].index)]
-        return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_offences','possible_statutes','link']]
+        return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_titles','possible_statutes','link']]
     elif re.search(' v ', search_string):
         temp = database.copy()
         temp1 = temp['case_name'].apply(lambda x: x.lower())
         result = database.loc[list(temp[temp1.str.contains(search_string)].index)]
-        return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_offences','possible_statutes','link']]
+        return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_titles','possible_statutes','link']]
     else:
         temp = database.copy()
         temp1 = temp['case_name'].apply(lambda x: x.lower())
         result = database.loc[list(temp[temp1.str.contains(search_string)].index)]
         if len(result) == 0:
             temp = database.copy().dropna()
-            temp2 = temp['possible_offences'].apply(lambda x: x.lower())
+            temp2 = temp['possible_titles'].apply(lambda x: x.lower())
             result = database.loc[list(temp[temp2.str.contains(search_string)].index)]
             if len(result) == 0:
                 temp3 = temp['possible_statutes'].apply(lambda x: x.lower())
@@ -74,11 +74,11 @@ def search_search(input_string):
                     Part of offence name (e.g. Forgery - try to avoid), or
                     Statute name (e.g. Section 33 Criminal Procedure Code)''')
                 else:
-                    return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_offences','possible_statutes','link']]
+                    return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_titles','possible_statutes','link']]
             else:
-                return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_offences','possible_statutes','link']]
+                return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_titles','possible_statutes','link']]
         else:
-            return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_offences','possible_statutes','link']]
+            return result[['tribunal/court','case_name','decision_date','aggravation_discussed','mitigation_discussed','citations','possible_titles','possible_statutes','link']]
 
 def aggravating(input_string):
     """

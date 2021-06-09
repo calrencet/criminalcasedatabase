@@ -18,8 +18,6 @@ The start of legal research tends to be a slow, manual, and inefficient process.
 According to a survey done by the ALL-SIS Task Force on Identifying Skills and Knowledge for Legal Practice in 2013, more than half the respondents frequently started their legal research by either looking through statutes or through a case law database, while slightly more than a third would frequently start their research through consulting a subject-specific guide.[1]  
 In the current state of the industry, this starting point can take a long time as the statutes and subject-specific guides tend to be wordy, and the case law databases contain many judgments which require further inspection to narrow down according to the case at hand.  
 
-
-
 ---
 ### Data Dictionary
 
@@ -83,8 +81,6 @@ The data dictionary for the datasets created through NLP are as follows:-
 |**mitigation_discussed**|*object*|database.csv|Whether mitigating circumstances were discussed in the judgment|
 |**aggravation_discussed**|*object*|database.csv|Whether aggravating circumstances were discussed in the judgment|
 
-
-
 ---
 ### Webscraping Lawnet
 
@@ -145,7 +141,7 @@ Overall, the RBIE system that I created ran well without an errors. It was able 
 
 However, I checked the judgments with missing `citations` and `possible_statutes`, and found that only the case name was mentioned in those judgments, with no other case citations or statutes found within, hence this is not an issue with the NLP. 
 
-I manually did a random sample of judgments and found that the accuracy rate for information extraction is close to 100%, although the permutations method causes a lot of non-existent statutes to be listed as `possible_statutes`. This is acceptable as it is more important to reduce type II errors (false negatives) where statutes wich are present are missed out.
+I manually did a random sample of judgments and found that the true positive rate for information extraction is close to 100%, although the permutations method causes a lot of non-existent statutes to be listed as `possible_statutes`. This is acceptable as it is more important to reduce type II errors (false negatives) where statutes wich are present are missed out.
 
 There are many instances where the `possible_offences` are `Not in database`. This is likely because the NLP uses permutations for statutes which are sometimes found separately from the section number, and the database of `statutes_crimes` is very limited and should be expanded as an improvement to the project.
 
@@ -177,8 +173,8 @@ There are many ways for web implementation of python code, but I decided to use 
 
 The process to setup the python code as a Flask and subsequently GAE app was challenging in the beginning as I did not understand the core concepts. However, after a bit of tinkering around and following online guides such as the [Martin Breuss's guide on RealPython](https://realpython.com/python-web-applications/#build-a-basic-python-web-application)[3] and [James Asher's guide to showing matplotlib plots](https://towardsdatascience.com/how-to-easily-show-your-matplotlib-plots-and-pandas-dataframes-dynamically-on-your-website-a9613eff7ae3)[4], I managed to successfully deploy the app to GAE.  
 
-![form.png](./images/form.png)  
-Sample `form.html` page
+![form.png](./images/index.png)  
+Sample `index.html` page
 
 ![results.html](./images/results.png)  
 Sample `results.html`  
@@ -191,6 +187,8 @@ This was overall a learning experience, with valuable skills learnt in app deplo
 ### Conclusion
 
 The webscraping and archival functions worked well, and achieved a 100% collection and archival rate, with no judgments missed. Further, the using a Rule-Based Information Extraction method, the Natural Language Processing of the judgments was quite successful as most of the data which I set out to collect was collected without any issues.  
+
+A manual sample check of judgments showed that the NLP returned a true positive rate of near 100%.
 
 However, there were a few missing values for `citations`, `statutes`, and `offences` as they were not actually in the judgments as well.  
 
@@ -214,6 +212,8 @@ This can prove to be a very useful feature for legal research, as cases which ar
 ### Future Improvement
 
 Although the NLP worked well, it is not perfect as it uses a Rule-Based Information Extraction method. The html structure may change, and the code is not transferrable to other legal judgment sources and databases. It can definitely be improved through the use of training a Named Entity Recognition Model with Machine Learning which can identify the different categories of Named Entities within the judgment.
+
+It should also be expanded to identify further statistical information such as the sentences given upon conviction, which would provide interesting insights.
 
 The use of a permutation method also caused extra information which was not actually found in the judgments to be captured for `possible_statutes` and `possible_titles`. It would be worthwhile to explore how NER might help to solve this issue.
 
