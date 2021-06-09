@@ -1,5 +1,7 @@
 # # Criminal Case Database
 
+** Please note that the judgments have not been uploaded to this repository as per my agreement with the Singapore Academy of Law. **
+
 ### Problem Statement
 
 Given the current inefficient processes for beginning legal research, this project seeks to create a proof-of-concept on the creation of an Information Retrieval system in the form of a database of Criminal Law Cases which includes statistical summaries, and legal citations to improve on the speed and efficiency of legal research.
