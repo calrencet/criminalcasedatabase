@@ -1,6 +1,7 @@
 # # Criminal Case Database
 
-** Please note that the judgments have not been uploaded to this repository as per my agreement with the Singapore Academy of Law. **
+** This is an independent project but permissions for the collecting of data from LawNet was given by the Singapore Academy of Law.
+The judgments have not been uploaded to this repository as per my agreement with the Singapore Academy of Law. **
 
 ** Please do NOT use any of the code or files without permission from me and the Singapore Academy of Law. **
 
