@@ -296,7 +296,7 @@ class Database:
         self.__case_name = {'case_name': self.__search_results.find('h2').text.strip()}
         
         # Create a temp variable for the case name without the case citation notation by looking for patterns of Capitalized words with name terms which are followed by v and further capitalized words with name terms as these suggest that it is a case name
-        self.__temp_case_name = re.search('(([A-Z][a-z]*)(([A-Z][a-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Z][a-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', str(self.__case_name)).group(0).strip()
+        self.__temp_case_name = re.search('(([A-Z][a-z]*)(([A-Z][a-z]*)|(d\/o|a\/l|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Z][a-z]*)|(d\/o|a\/l|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', str(self.__case_name)).group(0).strip()
         
         # Return case name as a dictionary
         return self.__case_name
@@ -500,7 +500,7 @@ class Database:
         self.__judgment_text = self.__search_results.text.replace('\xa0','')
         
         # Searches through text for patterns of Capitalized words with name terms which are followed by v and further capitalized words with name terms as these suggest that it is a case name
-        self.__case_search = re.findall('(([A-Z][a-z]*)(([A-Z][a-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Z][a-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', self.__judgment_text)
+        self.__case_search = re.findall('(([A-Z][a-z]*)(([A-Z][a-z]*)|(d\/o|a\/l|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Z][a-z]*)|(d\/o|a\/l|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', self.__judgment_text)
         
         # Instantiate an empty list
         self.__cases = []
@@ -508,7 +508,7 @@ class Database:
         # Iterate through the results to append the case name into a list, excluding duplicates
         for item in self.__case_search:
             case = []
-            temp_case = re.search('(([A-Z][a-z]*)(([A-Z][a-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Z][a-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', str(item)).group(0).replace("In ","").strip()
+            temp_case = re.search('(([A-Z][a-z]*)(([A-Z][a-z]*)|(d\/o|a\/l|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Z][a-z]*)|(d\/o|a\/l|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', str(item)).group(0).replace("In ","").strip()
             
             # Try removing a few wrong words which are captured
             try:

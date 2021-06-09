@@ -37,7 +37,7 @@ def classify_search(input_string):
         section_statute = section_num + " " + str.lower(statute)
         return section_statute
     elif re.search(' [Vv] ', input_string):
-        temp_case_name = re.search('((([A-Za-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Za-z]*)|(s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', input_string.lower()).group(0).strip()
+        temp_case_name = re.search('((([A-Za-z]*)|(d\/o|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))* v (([A-Za-z]*)|(d\/o|s\/o| |bte|bin|and|another|anr|binti|de|the|for|other|matters))*(?=|))', input_string.lower()).group(0).strip()
         case_name = str.lower(temp_case_name)
         return case_name
     else:
