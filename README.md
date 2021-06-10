@@ -186,6 +186,8 @@ Sample `results.html`
 
 This was overall a learning experience, with valuable skills learnt in app deployment for python code.
 
+You can test the app [here](https://criminalcasedatabaseapp.et.r.appspot.com)
+
 ---
 
 
