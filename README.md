@@ -1,4 +1,9 @@
-# # Criminal Case Database
+# Criminal Case Database
+
+** This is an independent project but permissions for the collecting of data from LawNet was given by the Singapore Academy of Law.
+The judgments have not been uploaded to this repository as per my agreement with the Singapore Academy of Law. **
+
+** Please do NOT use any of the code or files without permission from me and the Singapore Academy of Law. **
 
 ### Problem Statement
 
@@ -180,6 +185,8 @@ Sample `index.html` page
 Sample `results.html`  
 
 This was overall a learning experience, with valuable skills learnt in app deployment for python code.
+
+You can test the app [here](https://criminalcasedatabaseapp.et.r.appspot.com)
 
 ---
 
